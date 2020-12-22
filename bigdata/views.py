@@ -81,6 +81,7 @@ def SaveGroceryCount(email):
     start = time.time()
     # 현재 식재료 받아오기
     grocery_name = Grocery.objects.filter(email=email).values_list('name', 'count')
+    # 유저 이름 받아오기
     user_name = UserInfo.objects.filter(email=email).values_list('name')
     print('grocery_name',grocery_name)
     now_grocery_dict = {}
@@ -101,6 +102,7 @@ def SaveGroceryCount(email):
     answer_dict_list = []
     intent_list = list(now_grocery_dict.keys())
     count_list = list(now_grocery_dict.values())
+    # 의도(인사)의 대답 생성
     greeting_dict = {'email' : email, 'intent': "인사", 'answer': user_name[0][0] + "님 안녕하세요"}
     answer_dict_list.append(greeting_dict)
     for i in range(len(now_grocery_dict)):
