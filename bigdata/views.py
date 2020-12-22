@@ -101,9 +101,8 @@ def SaveGroceryCount(email):
     intent_list = list(now_grocery_dict.keys())
     count_list = list(now_grocery_dict.values())
     for i in range(len(now_grocery_dict)):
-        answer_dict = {'email' : email, 'intent': intent_list[i] + '개수', 'answer': count_list[i]}
+        answer_dict = {'email' : email, 'intent': intent_list[i] + '개수', 'answer': '현재 ' + intent_list[i] + '의 ' + '개수는 ' + str(count_list[i])+ '개 입니다.'}
         answer_dict_list.append(answer_dict)
-
     # DB삭제
     answer_grocery_count = Answercount.objects.filter(email=email)
     answer_grocery_count.delete()
