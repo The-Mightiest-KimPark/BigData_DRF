@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets, permissions, generics, status, filters
 from .serializers import AnswercountSerializer
-from .models import Answercount, IntentModel, Preprocess, Grocery
+from .models import Answercount, IntentModel, Preprocess, Grocery, UserInfo
 import pymysql
 import re
 import pandas as pd
@@ -81,6 +81,7 @@ def SaveGroceryCount(email):
     start = time.time()
     # 현재 식재료 받아오기
     grocery_name = Grocery.objects.filter(email=email).values_list('name', 'count')
+    user_name = UserInfo.objects.filter(email=email).values_list('name')
     print('grocery_name',grocery_name)
     now_grocery_dict = {}
 
@@ -100,6 +101,8 @@ def SaveGroceryCount(email):
     answer_dict_list = []
     intent_list = list(now_grocery_dict.keys())
     count_list = list(now_grocery_dict.values())
+    greeting_dict = {'email' : email, 'intent': "인사", 'answer': user_name[0][0] + "님 안녕하세요"}
+    answer_dict_list.append(greeting_dict)
     for i in range(len(now_grocery_dict)):
         answer_dict = {'email' : email, 'intent': intent_list[i] + '개수', 'answer': '현재 ' + intent_list[i] + '의 ' + '개수는 ' + str(count_list[i])+ '개 입니다.'}
         answer_dict_list.append(answer_dict)
